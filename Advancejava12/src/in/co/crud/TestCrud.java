@@ -13,7 +13,9 @@ public class TestCrud {
 	
     	Statement stmt= conn.createStatement();
     	
-    	int i = stmt.executeUpdate("insert into emp values(8,'Naman',1500)");
+    	int i = stmt.executeUpdate("insert into emp values(10,'Naman',1500)");
+    	  
+    	i = stmt.executeUpdate("insert into emp values(9,'Narakasur',5500)");
     	
     	System.out.println("Data insert="+ i);
     
