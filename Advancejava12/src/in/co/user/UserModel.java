@@ -11,9 +11,7 @@ public class UserModel {
 		 
 		int pk = 0;
 		
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sunrays","root","root");
+		Connection conn = JdbcDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("select max(id) from user");
 		
@@ -22,14 +20,13 @@ public class UserModel {
 		while(rs.next()) {
 			pk = rs.getInt(1);
 		}
+		conn.close();
 		return pk+1;
 	}
 	
 	public void add(UserBean bean)throws Exception{
 		
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sunrays","root","root");
+		Connection conn = JdbcDataSource.getConnection();
 		
 	PreparedStatement ps =	conn.prepareStatement("insert into user values(?,?,?,?,?,?,?)");
 	
@@ -42,15 +39,14 @@ public class UserModel {
     ps.setString(7, bean.getAddress());
     
     int i = ps.executeUpdate();
+    conn.close();
     
     System.out.println("Data inserted="+ i);
 	}
 	
 	public void update(UserBean bean)throws Exception{
 		
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sunrays","root","root");
+		Connection conn = JdbcDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("update user set first_name = ?, last_name = ?,login_id = ?, password = ?, dob = ?, address = ? where id = ?");
 		
@@ -63,7 +59,33 @@ public class UserModel {
 		ps.setInt(7, bean.getId());
 		
 		int i = ps.executeUpdate();
+		conn.close();
 		
 		System.out.println("Data updated="+i);
+	}
+	
+	public UserBean authenticate(String loginId, String password)throws Exception {
+		Connection conn = JdbcDataSource.getConnection();
+	  PreparedStatement ps = conn.prepareStatement("select * from user where login_id = ? and password = ?");
+	
+	  ps.setString(1, loginId);
+	  ps.setString(2, password);
+	  
+	  ResultSet rs = ps.executeQuery();
+	  
+	  UserBean bean = null;
+	  while(rs.next()) {
+		  bean = new UserBean();
+		  
+		  bean.setId(rs.getInt(1));
+		  bean.setFirstName(rs.getString(2));
+		  bean.setLastName(rs.getString(3));
+		  bean.setLoginId(rs.getString(4));
+		  bean.setPassword(rs.getString(5));
+		  bean.setDob(rs.getDate(6));
+		  bean.setAddress(rs.getString(7));
+	  }
+	  conn.close();
+	  return bean;
 	}
 }

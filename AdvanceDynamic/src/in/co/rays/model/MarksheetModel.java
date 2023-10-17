@@ -1,4 +1,4 @@
-package in.co.crud;
+package in.co.rays.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import in.co.user.JdbcDataSource;
+import in.co.rays.bean.MarksheetBean;
+import in.co.rays.util.JDBCDataSource;
+
 
 public class MarksheetModel {
 	
@@ -16,7 +18,7 @@ public class MarksheetModel {
 		
 		int pk = 0;
 		
-		Connection conn = JdbcDataSource.getConnection();
+		Connection conn = JDBCDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("select max(id) from marksheet");
 		
@@ -31,7 +33,7 @@ public class MarksheetModel {
 	
 	public void add(MarksheetBean bean)throws Exception{
 		
-		Connection conn = JdbcDataSource.getConnection();
+		Connection conn = JDBCDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("insert into marksheet values(?,?,?,?,?,?)");
 		
@@ -52,7 +54,7 @@ public class MarksheetModel {
 	}
 	
 	public void update(MarksheetBean bean)throws Exception{
-		Connection conn = JdbcDataSource.getConnection();
+		Connection conn = JDBCDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("update marksheet set name=?,roll_no=?,physics=?,chemistry=?, maths=? where id =?");
 		
@@ -71,7 +73,7 @@ public class MarksheetModel {
 	
 	public void delete(int id)throws Exception{
 		
-		Connection conn = JdbcDataSource.getConnection();
+		Connection conn = JDBCDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("delete from marksheet where id= ?");
 		
@@ -85,7 +87,7 @@ public class MarksheetModel {
 	
 	public MarksheetBean findById(int id) throws Exception{
 		
-		Connection conn = JdbcDataSource.getConnection();
+		Connection conn = JDBCDataSource.getConnection();
 		
 		PreparedStatement ps = conn.prepareStatement("select * from marksheet where id = ?");
 		
@@ -112,7 +114,7 @@ public class MarksheetModel {
 	
 	public List search(MarksheetBean bean,int pageNo,int pageSize) throws Exception{
 		
-		Connection conn = JdbcDataSource.getConnection();
+		Connection conn = JDBCDataSource.getConnection();
 		StringBuffer sql = new StringBuffer("select * from marksheet where 1=1");
 		
 		if(bean != null) {

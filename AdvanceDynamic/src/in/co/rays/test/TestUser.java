@@ -1,12 +1,15 @@
-package in.co.user;
+package in.co.rays.test;
 
 import java.text.SimpleDateFormat;
 
+import in.co.rays.bean.UserBean;
+import in.co.rays.model.UserModel;
+
 public class TestUser {
 public static void main(String[] args) throws Exception {
-//	testAdd();
+	testAdd();
 //	testUpdate();
-	testAuthenticate();
+	//testAuthenticate();
 	
 }
 

@@ -1,8 +1,10 @@
-package in.co.user;
+package in.co.rays.test;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import in.co.rays.util.JDBCDataSource;
 
 public class TestJDBC {
 public static void main(String[] args)throws Exception {
@@ -16,7 +18,7 @@ public static void main(String[] args)throws Exception {
 
 private static void testGet() throws Exception {
 	
-	Connection conn = JdbcDataSource.getConnection();
+	Connection conn = JDBCDataSource.getConnection();
 	
 	PreparedStatement ps = conn.prepareStatement("select * from marksheet where id = 1");
 	

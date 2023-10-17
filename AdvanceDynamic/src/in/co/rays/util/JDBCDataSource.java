@@ -1,23 +1,22 @@
-package in.co.user;
+package in.co.rays.util;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-public final class JdbcDataSource {
+public final class JDBCDataSource {
 
-	private static JdbcDataSource jds = null;
-	
+	private static JDBCDataSource jds = null;
+
 	private ComboPooledDataSource cpds = null;
-	ResourceBundle rb = ResourceBundle.getBundle("in.co.bundle.system ");
-	private JdbcDataSource() {
+	ResourceBundle rb = ResourceBundle.getBundle("in.co.rays.bundle.system");
+
+	private JDBCDataSource() {
 		try {
 			cpds = new ComboPooledDataSource();
-			
-			
+
 			cpds.setDriverClass(rb.getString("driver"));
 			cpds.setJdbcUrl(rb.getString("url"));
 			cpds.setUser(rb.getString("username"));
@@ -29,40 +28,42 @@ public final class JdbcDataSource {
 			e.printStackTrace();
 		}
 	}
-	
-	public static JdbcDataSource getInstance() {
-		
-		if(jds == null) {
-			jds = new JdbcDataSource();
+
+	public static JDBCDataSource getInstance() {
+
+		if (jds == null) {
+			jds = new JDBCDataSource();
 		}
 		return jds;
 	}
-	
+
 	public static Connection getConnection() {
 		try {
 			return getInstance().cpds.getConnection();
 		} catch (Exception e) {
-		
+
 		}
 		return null;
-		}
-	
+	}
+
 	public static void closeConnection(Connection conn, Statement stmt, ResultSet rs) {
 		try {
-			if(rs != null)rs.close();
-			if(stmt != null)stmt.close();
-			if(conn != null)conn.close();
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void closeConnection(
-			Connection conn, Statement stmt) {
+
+	public static void closeConnection(Connection conn, Statement stmt) {
 		closeConnection(conn, stmt, null);
 	}
-	
+
 	public static void closeConnection(Connection conn) {
-		closeConnection(conn,null,null);
+		closeConnection(conn, null, null);
 	}
 }
