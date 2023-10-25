@@ -1,16 +1,50 @@
 package in.co.rays.test;
 
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.util.List;
 
+import in.co.rays.bean.MarksheetBean;
 import in.co.rays.bean.UserBean;
 import in.co.rays.model.UserModel;
 
 public class TestUser {
 public static void main(String[] args) throws Exception {
-	testAdd();
+//	testAdd();
 //	testUpdate();
-	//testAuthenticate();
+	testAuthenticate();
 	
+	testSearch();
+//	testDelete();
+	
+}
+
+private static void testDelete() throws Exception {
+
+	UserModel model = new UserModel();
+	model.delete(6);
+}
+
+private static void testSearch() throws Exception{
+	
+	UserModel model = new UserModel();
+	UserBean bean = new UserBean();
+	
+	List list = model.search(null, 2, 5);
+	 Iterator it = list.iterator();
+	 
+	 while(it.hasNext()) {
+		    bean = (UserBean) it.next();
+			
+			System.out.print(bean.getId());
+			System.out.print("\t"+bean.getFirstName());
+			System.out.print("\t"+bean.getLastName());
+			System.out.print("\t"+bean.getLoginId());
+			System.out.print("\t"+bean.getPassword());
+			System.out.print("\t"+bean.getDob());
+			System.out.println("\t"+bean.getAddress());
+		}
+		
 }
 
 private static void testAuthenticate() throws Exception {

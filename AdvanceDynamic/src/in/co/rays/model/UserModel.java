@@ -3,6 +3,8 @@ package in.co.rays.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import in.co.rays.bean.UserBean;
 import in.co.rays.util.JDBCDataSource;
@@ -25,6 +27,7 @@ public class UserModel {
 		conn.close();
 		return pk + 1;
 	}
+	//Add method
 
 	public void add(UserBean bean) throws Exception {
 
@@ -45,7 +48,8 @@ public class UserModel {
 
 		System.out.println("Data inserted=" + i);
 	}
-
+     //update method
+	
 	public void update(UserBean bean) throws Exception {
 
 		Connection conn = JDBCDataSource.getConnection();
@@ -66,6 +70,8 @@ public class UserModel {
 
 		System.out.println("Data updated=" + i);
 	}
+	
+	//Authenticate method
 
 	public UserBean authenticate(String loginId, String password) throws Exception {
 		Connection conn = JDBCDataSource.getConnection();
@@ -90,5 +96,76 @@ public class UserModel {
 		}
 		conn.close();
 		return bean;
+
 	}
-}
+	//Delete method
+	 
+			public void delete(int id)throws Exception{
+				
+				Connection conn = JDBCDataSource.getConnection();
+				
+				PreparedStatement ps = conn.prepareStatement("delete from user where id= ?");
+				
+				ps.setInt(1, id);
+				
+				
+				int i = ps.executeUpdate();
+				conn.close();
+				
+				System.out.println("Data deleted"+i);
+			}
+	
+	//Search Method
+	
+	public List search(UserBean bean,int pageNo,int pageSize)throws Exception {
+		
+		Connection conn = JDBCDataSource.getConnection();
+		
+		StringBuffer sql = new StringBuffer("select * from user where 1=1");
+		
+		if(bean !=null) {
+			if(bean.getFirstName() !=null && bean.getFirstName().length()>0) {
+				sql.append(" and first_name like '"+bean.getFirstName()+"%'");
+			}
+				if(bean.getDob()!=null && bean.getDob().getTime()>0) {
+					sql.append(" and dob like '"+new java.sql.Date(bean.getDob().getTime())+"%'");
+				}
+			}
+			
+			if(pageSize > 0) {
+				pageNo = (pageNo-1)* pageSize;
+				sql.append(" limit " + pageNo +"," + pageSize);
+			}
+			
+			PreparedStatement ps = conn.prepareStatement(sql.toString());
+			ResultSet rs = ps.executeQuery();
+			
+			List list = new ArrayList();
+			
+			while(rs.next()) {
+				
+				bean = new UserBean();
+				
+				bean.setId(rs.getInt(1));
+				bean.setFirstName(rs.getString(2));
+				bean.setLastName(rs.getString(3));
+				bean.setLoginId(rs.getString(4));
+				bean.setPassword(rs.getString(5));
+				bean.setDob(rs.getDate(6));
+				bean.setAddress(rs.getString(7));
+				
+				list.add(bean);
+				
+		}
+			conn.close();
+			
+		
+		return list;
+		
+		}
+	
+	
+		
+		
+	}
+

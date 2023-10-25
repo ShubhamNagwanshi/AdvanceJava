@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,51 +20,24 @@ public class FirstServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	System.out.println("in first servlet do get ...!!!");
+	
+//	resp.sendRedirect("SecondServlet");
+	
+	RequestDispatcher rd = req.getRequestDispatcher("SecondServlet");
+	
+	rd.forward(req, resp);
 	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 	
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println("in first servlet do post....!!");
 		
-		System.out.println("in first servlet do post ...!!");
-	
-		String fname = req.getParameter("firstName");
-		String lname = req.getParameter("lastName");
-		String login = req.getParameter("loginId");
-		String pwd = req.getParameter("password");
-		String dob = req.getParameter("dob");
-		String address = req.getParameter("address");
-	
-		UserBean bean = new UserBean();
+//		resp.sendRedirect("SecondServlet");
 		
-		bean.setFirstName(fname);
-		bean.setLastName(lname);
-		bean.setLoginId(login);
-		bean.setPassword(pwd);
-		try {
-			bean.setDob(sdf.parse(dob));
-		} catch (ParseException e) {
-			
-			e.printStackTrace();
-		}
-		bean.setAddress(address);
+		req.setAttribute("address", "indore");
 		
-		UserModel model = new UserModel();
+		RequestDispatcher rd = req.getRequestDispatcher("SecondServlet");
 		
-		try {
-			model.add(bean);
-		} catch (Exception e) {
-	
-			e.printStackTrace();
-		}
-		
-		resp.setContentType("text/html");
-		
-		PrintWriter out = resp.getWriter();
-		
-		out.write("<h1> Hello Guys.. how are you???</h1>");
-		
-		out.close();
-	
+		rd.forward(req, resp);
 	}
 }
